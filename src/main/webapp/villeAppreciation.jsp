@@ -53,6 +53,15 @@
         .contenu {
             font-style: italic;
         }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -66,35 +75,72 @@
                     <th>Ville</th>
                     <th>Appréciation</th>
                 </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="appreciation" items="${appreciations}">
-                    <tr>
-                        <td>
-                            <c:choose>
-                                <c:when test="${appreciation.auteurId != null}">
-                                    <%-- Assuming selectAuteurById returns the author details --%>
-                                    <c:set var="auteur" value="${DBDao.selectAuteurById(appreciation.auteurId)}" />
-                                    <span class="auteur-ville">${auteur.nom}</span>
-                                </c:when>
-                                <c:otherwise>Inconnu</c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${appreciation.villeId != null}">
-                                    <%-- Assuming selectVilleById returns the city details --%>
-                                    <c:set var="ville" value="${DBDao.selectVilleById(appreciation.villeId)}" />
-                                    <span class="auteur-ville">${ville.nom}</span>
-                                </c:when>
-                                <c:otherwise>Inconnue</c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td class="contenu">${appreciation.contenu}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
+           <thead>
+    <tr>
+        <th>Auteur</th>
+        <th>Ville</th>
+        <th>Appréciation</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+</thead>
+<tbody>
+    <c:forEach var="appreciation" items="${appreciations}">
+        <tr>
+            <td>
+                <c:choose>
+                    <c:when test="${appreciation.auteurId != null}">
+                        <c:set var="auteur" value="${DBDao.selectAuteurById(appreciation.auteurId)}" />
+                        <span class="auteur-ville">${auteur.nom}</span>
+                    </c:when>
+                    <c:otherwise>Inconnu</c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${appreciation.villeId != null}">
+                        <c:set var="ville" value="${DBDao.selectVilleById(appreciation.villeId)}" />
+                        <span class="auteur-ville">${ville.nom}</span>
+                    </c:when>
+                    <c:otherwise>Inconnue</c:otherwise>
+                </c:choose>
+            </td>
+            <td class="contenu">${appreciation.contenu}</td>
+            <td>
+                <!-- Bouton Modifier -->
+                <form action="/jakartaee-livre-dor/LivreDorServlet" method="post" style="margin: 0;">
+                    <input type="hidden" name="appreciationId" value="${appreciation.id}">
+                    <input type="hidden" name="villeId" value="${appreciation.villeId}">
+                    <input type="hidden" name="contenu" value="${appreciation.contenu}">
+                    <input type="hidden" name="action" value="modifyAppreciation">
+                    <button type="submit" class="button">Modifier</button>
+                </form>
+            </td>
+            <td>
+                <!-- Bouton Supprimer -->
+                <form action="/jakartaee-livre-dor/LivreDorServlet" method="post" style="margin: 0;">
+                    <input type="hidden" name="appreciationId" value="${appreciation.id}">
+                    <input type="hidden" name="villeId" value="${appreciation.villeId}">
+                    <input type="hidden" name="action" value="deleteAppreciation">
+                    <button type="submit" class="button" style="background-color: #f44336;">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+    </c:forEach>
+</tbody>
+
         </table>
+		<br>
+		<%
+    String villeId = request.getParameter("id");
+%>
+		
+        <form action="/jakartaee-livre-dor/LivreDorServlet" method="post">
+            <input type="hidden" name="userId" value="${userId}">
+            <input type="hidden" name="villeId" value="<%= villeId %>">
+            <input type="hidden" name="action" value="addAppreciation">
+            <button type="submit" class="button">Ajouter une appréciation</button>
+        </form>
     </div>
 
 </body>

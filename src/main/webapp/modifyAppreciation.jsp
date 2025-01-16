@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter une Appréciation</title>
+    <title>Modifier une Appréciation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,7 +55,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid #ccc;
@@ -86,24 +86,23 @@
 <body>
 
 <header>
-    <h1>Ajouter une Appréciation</h1>
+    <h1>Modifier une Appréciation</h1>
 </header>
 
 <main>
-<%
-    String villeId = request.getParameter("villeId");
-%>
-
     <div class="container">
         <form action="/jakartaee-livre-dor/LivreDorServlet" method="post">
-            <input type="hidden" name="action" value="insertAppreciation">
-            <input type="hidden" name="userid" value="${userid}">
-            <input type="hidden" name="villeid" value="<%= villeId %>">
             <div class="form-group">
                 <label for="contenu">Contenu de l'appréciation :</label>
-                <textarea id="contenu" name="contenu" required></textarea>
+                <textarea id="contenu" name="contenu" required>
+                    <%= request.getParameter("contenu") %>
+                </textarea>
             </div>
-            <button type="submit" class="button">Ajouter</button>
+            <input type="hidden" name="villeId" value="<%= request.getParameter("villeId") %>">
+            <input type="hidden" name="appreciationId" value="<%= request.getParameter("appreciationId") %>">
+            <input type="hidden" name="action" value="updateAppreciation">
+
+            <button type="submit" class="button">Modifier</button>
         </form>
     </div>
 </main>

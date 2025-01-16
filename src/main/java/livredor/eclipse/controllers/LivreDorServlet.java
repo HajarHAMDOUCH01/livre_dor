@@ -44,9 +44,17 @@ public class LivreDorServlet extends HttpServlet {
                     request.getRequestDispatcher("addAppreciation.jsp").forward(request, response);
                     break;
                 case "modifyAppreciation":
+                    if (!isAuthenticated(request)) {
+                        response.sendRedirect("BasicVues/login.jsp");
+                        return;
+                    }
                     request.getRequestDispatcher("modifyAppreciation.jsp").forward(request, response);
                     break;
                 case "deleteAppreciation":
+                    if (!isAuthenticated(request)) {
+                        response.sendRedirect("BasicVues/login.jsp");
+                        return;
+                    }
                     request.getRequestDispatcher("deleteAppreciation.jsp").forward(request, response);
                     break;
                 case "insertAppreciation":
@@ -175,9 +183,9 @@ public class LivreDorServlet extends HttpServlet {
     }
 
     private void insertAppreciation(HttpServletRequest request) throws SQLException {
-        String content = request.getParameter("content");
+        String content = request.getParameter("contenu");
         int authorId = ((Auteur) request.getSession().getAttribute("user")).getId();
-        int cityId = Integer.parseInt(request.getParameter("cityId"));
+        int cityId = Integer.parseInt(request.getParameter("villeid"));
 
         Appreciation appreciation = new Appreciation();
         appreciation.setContenu(content);
@@ -188,8 +196,8 @@ public class LivreDorServlet extends HttpServlet {
     }
 
     private void updateAppreciation(HttpServletRequest request) throws SQLException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String content = request.getParameter("content");
+        int id = Integer.parseInt(request.getParameter("appreciationId"));
+        String content = request.getParameter("contenu");
 
         Appreciation appreciation = new Appreciation();
         appreciation.setId(id);
@@ -199,7 +207,7 @@ public class LivreDorServlet extends HttpServlet {
     }
 
     private void dropAppreciation(HttpServletRequest request) throws SQLException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(request.getParameter("appreciationId"));
         DBDao.deleteAppreciation(id);
     }
 

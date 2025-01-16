@@ -166,18 +166,15 @@
 window.onload = function() {
     console.log("Slider script loaded");
     
-    // Get elements
     var container = document.getElementById('villeContainer');
-    console.log("Container found:", container); // Debug log
+    console.log("Container found:", container); 
     
     var position = 0;
-    var slideAmount = document.querySelector('.ville-card').offsetWidth + 20; // Adjusted for 10px margin on both sides
+    var slideAmount = document.querySelector('.ville-card').offsetWidth + 20; 
     
-    // Function to move slides
     window.moveSlide = function(direction) {
-        console.log("moveSlide called with direction:", direction); // Debug log
+        console.log("moveSlide called with direction:", direction); 
         
-        // Calculate new position
         if (direction > 0) {
             position -= slideAmount;
             console.log("Moving right, new position:", position);
@@ -186,12 +183,10 @@ window.onload = function() {
             console.log("Moving left, new position:", position);
         }
         
-        // Get total width of all slides
         var totalWidth = container.scrollWidth;
         var visibleWidth = container.offsetWidth;
         console.log("Total width:", totalWidth, "Visible width:", visibleWidth);
         
-        // Prevent sliding too far
         if (position > 0) {
             position = 0;
         }
@@ -199,12 +194,10 @@ window.onload = function() {
             position = -(totalWidth - visibleWidth);
         }
         
-        // Apply the transform
         container.style.transform = 'translateX(' + position + 'px)';
         console.log("Applied transform:", container.style.transform);
     };
     
-    // Add click event listeners directly to buttons
     document.querySelector('.arrow-button-left').addEventListener('click', function() {
         moveSlide(-1);
     });
